@@ -1,0 +1,38 @@
+{
+  "Author": "{{author.name}} <{{author.email}}> ({{&author.url}})",
+  "name": "{{package.name}}",
+  "description": "{{package.description}}",
+  "keywords": ["font", "font-face", "CSS", "connect-fonts"{{#font.name}}, {{font.name}}{{/font.name}}],
+  {{#package.homepage}}
+  "homepage": "{{&package.homepage}}",
+  {{/package.homepage}}
+  "licenses": [
+    {
+      "covers": "software",
+      "type": "MPL-2.0",
+      "url": "http://mozilla.org/MPL/2.0/"
+    },
+    {
+      "covers": "fonts",
+      "type": "{{license.abbreviation}}",
+      "url": "{{&license.url}}"
+    }
+  ],
+  {{#package.repourl}}
+  "repository": {
+    "type": "git",
+    "url": "{{&package.repourl}}"
+  },
+  {{/package.repourl}}
+  {{#package.bugsurl}}
+  "bugs": {
+    "url": "{{&package.bugsurl}}"
+  },
+  {{/package.bugsurl}}
+  "version": "0.0.1",
+  "engines": {
+    "node": ">= 0.4.7"
+  },
+  "main": "index"
+}
+

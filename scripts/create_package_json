@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+const path          = require('path'),
+      packageJSON   = require('../lib/package_json'),
+      licenses      = require('../lib/licenses'),
+      optimist      = require('optimist')
+                          .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
+                          .alias('l', 'license')
+                          .demand('l')
+                          .describe('fn', 'font name')
+                          .demand('fn')
+                          .describe('an', 'Author name')
+                          .demand('an')
+                          .describe('ae', 'Author email')
+                          .demand('ae')
+                          .describe('au', 'Author url')
+                          .demand('au')
+                          .describe('pn', 'Package name')
+                          .demand('pn')
+                          .describe('pd', 'Package description')
+                          .demand('pd')
+                          .describe('ph', 'Project homepage URL')
+                          .describe('pr', 'Project repo URL')
+                          .describe('pb', 'Project bug tracker URL')
+                          .usage('usage: ' + path.basename(__filename) +
+                                ' <target_dir> [options]'),
+      argv          = optimist.argv;
+
+var targetName = argv._[0];
+if (!targetName) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+if (!licenses[argv.l]) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+packageJSON.write({
+  target_dir: targetName,
+  author: {
+    name: argv.an,
+    email: argv.ae,
+    url: argv.au
+  },
+  package: {
+    name: argv.pn,
+    description: argv.pd,
+    homepage: argv.ph || false,
+    repourl: argv.pr || false,
+    bugsurl: argv.pb || false
+  },
+  license: licenses[argv.l]
+});
+
+
