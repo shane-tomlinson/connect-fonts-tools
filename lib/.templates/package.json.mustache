@@ -1,8 +1,8 @@
 {
-  "Author": "{{author.name}} <{{author.email}}> ({{&author.url}})",
+  "Author": "{{author.name}} <{{author.first_emails}}> ({{&author.first_urls}})",
   "name": "{{package.name}}",
-  "description": "{{package.description}}",
-  "keywords": ["font", "font-face", "CSS", "connect-fonts"{{#font.name}}, {{font.name}}{{/font.name}}],
+  "description": "{{font.family}} font pack for connect-fonts",
+  "keywords": ["font", "font-face", "CSS", "connect-fonts"{{#font.names}}, "{{.}}"{{/font.names}}],
   {{#package.homepage}}
   "homepage": "{{&package.homepage}}",
   {{/package.homepage}}

@@ -1,0 +1,81 @@
+# {{package.name}}
+
+{{font.family}} fontpack for [connect-fonts](https://github.com/shane-tomlinson/connect-fonts).
+
+## Usage
+
+1. Include [connect-fonts](https://github.com/shane-tomlinson/connect-fonts) in a node module.
+```
+const font_middleware = require("connect-fonts");
+```
+
+2. Include the font packs that you want to serve.
+```
+const font_pack  = require("{{package.name}}");
+```
+
+3. Add a middleware by calling the `setup` function.
+```
+    app.use(font_middleware.setup({
+      fonts: [ font_pack ],
+      allow_origin: "https://exampledomain.com"
+    }));
+```
+
+4. Add a link tag to include the font CSS.
+```
+    <link href="/en/{{font.first_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
+```
+
+Available fonts:
+{{#font.names}}
+* {{.}}
+{{/font.names}}
+
+5. Set your CSS up to use the new font by using the "{{font.family}}" font-family.
+```
+    body {
+      font-family: '{{font.family}}', 'sans-serif', 'serif';
+    }
+```
+
+
+## Development Info
+{{#package.homepage}}
+* Homepage: {{&package.homepage}}
+{{/package.homepage}}
+{{#package.repourl}}
+* Repo: {{&package.repourl}}
+{{/package.repourl}}
+{{#package.bugsurl}}
+* Bugs: {{&package.bugsurl}}
+{{/package.bugsurl}}
+
+## Author
+* {{author.name}}
+{{#author.emails}}
+* {{&.}}
+{{/author.emails}}
+{{#author.urls}}
+* {{&.}}
+{{/author.urls}}
+{{#author.githubs}}
+* {{&.}}
+{{/author.githubs}}
+* {{author.twitter}}
+
+{{#credits}}
+## Credits
+{{credits}}
+{{/credits}}
+
+## License
+
+This software is licenced under version 2.0 of the MPL:
+
+  https://www.mozilla.org/MPL/
+
+Fonts are licensed under version {{license.version}} of the {{license.name}}
+
+  {{&license.url}}
+

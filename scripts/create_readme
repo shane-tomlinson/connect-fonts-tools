@@ -6,7 +6,7 @@
 
 
 const path          = require('path'),
-      packageJSON   = require('../lib/generate_package_json'),
+      gen_readme    = require('../lib/generate_readme'),
       licenses      = require('../lib/licenses'),
       optimist      = require('optimist')
                           .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
@@ -29,6 +29,7 @@ const path          = require('path'),
                           .describe('ph', 'Project homepage URL')
                           .describe('pr', 'Project repo URL')
                           .describe('pb', 'Project bug tracker URL')
+                          .describe('c', 'Credits')
                           .usage('usage: ' + path.basename(__filename) +
                                 ' <target_dir> [options]'),
       argv          = optimist.argv;
@@ -44,7 +45,7 @@ if (!licenses[argv.l]) {
   process.exit(1);
 }
 
-packageJSON.write({
+gen_readme.write({
   target_dir: targetName,
   author: {
     name: argv.an,
@@ -63,6 +64,7 @@ packageJSON.write({
     names: argv.fn,
     family: argv.ff
   },
+  credits: argv.c,
   license: licenses[argv.l]
 });
 
