@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+const fs            = require('fs-extra'),
+      path          = require('path'),
+      tmp           = require('tmp'),
+      mkdirp        = require('mkdirp'),
+      child_process = require('child_process'),
+      optimist      = require('optimist')
+                          .usage('usage: ' + path.basename(__filename) +
+                                ' <filename> <target_dir>')
+      argv          = optimist.argv;
+
+tmp.setGracefulCleanup();
+
+const WEB_FONTS_PROCESSOR_PATH = path.join(__dirname, '..', 'node_modules', '.bin', 'webfonts');
+
+var fileName = argv._[0];
+var targetName = argv._[1];
+
+if (!(fileName && targetName)) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+if (path.extname(fileName).toLowerCase() !== '.ttf') {
+  notATTF();
+}
+
+tmp.dir(function(err, tmpPath) {
+  var tmpFile = path.join(tmpPath, path.basename(fileName));
+  fs.copy(fileName, tmpFile, function(err) {
+    mkdirp.sync(targetName);
+    spawn(WEB_FONTS_PROCESSOR_PATH, [tmpPath, '-o', targetName], null, function() {
+      process.exit(0);
+    });
+  });
+});
+
+
+function notATTF(file) {
+  console.error(path.basename(__filename) + " can only work with ttf files");
+  process.exit(1);
+}
+
+function spawn(cmd, args, opts, done) {
+  var child = child_process.spawn(cmd, args, opts);
+  child.stdout.pipe(process.stdout);
+  child.stderr.pipe(process.stderr);
+  child.on('exit', function(code) {
+    if (code) {
+      console.error(cmd + " exited with code " + code);
+      process.exit(code);
+    }
+    done(null);
+  });
+}
+
