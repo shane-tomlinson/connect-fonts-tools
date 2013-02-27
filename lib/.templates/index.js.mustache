@@ -1,0 +1,31 @@
+const path = require("path");
+
+module.exports = {
+  "root": path.join(__dirname, "fonts"),
+
+  // where to find a locale's fonts in the fonts directory
+  "locale-to-subdirs": { 
+  {{#aliases}} 
+    {{from}}: "{{to}}"{{separator}}
+  {{/aliases}}
+  },
+
+  // what font types are enabled and what are the extensions of
+  // the font files.
+  //
+  // valid types are embedded-opentype, woff, truetype, svg
+  "enabled-types": [ "eot", "woff", "ttf", "svg" ],
+
+  // The fonts. The name of the font must be the same as the font
+  // in the fonts directory.
+  "fonts": {
+    {{#fonts}}
+      "{{name}}": {
+        "fontFamily": "{{family}}",
+        "fontStyle": "{{style}}",
+        "fontWeight": "{{weight}}",
+        "local": [ {{&local}} ]
+      }{{separator}}
+    {{/fonts}}
+  }
+};

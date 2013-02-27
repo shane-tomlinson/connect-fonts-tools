@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+const path          = require('path'),
+      gen_index     = require('../lib/generate_index_js'),
+      optimist      = require('optimist')
+                          .describe('fn', 'font name(s) - comma separated list if more than one')
+                          .demand('fn')
+                          .describe('fl', 'font local name(s) - comma separated list if more than one. Must be the same in numer as --fn')
+                          .demand('fl')
+                          .describe('ff', 'font family')
+                          .demand('ff')
+                          .describe('a', 'aliases - comma separated list of aliased lcoales to their subdirectories - eg: de:german')
+                          .usage('usage: ' + path.basename(__filename) +
+                                ' <target_dir> [options]'),
+      argv          = optimist.argv;
+
+var targetName = argv._[0];
+if (!targetName) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+var aliases = {};
+if (argv.a) {
+  var aliasInput = argv.a.split(',');
+  aliasInput.forEach(function(alias) {
+    var parts = alias.split(':');
+    var from = parts[0].trim();
+    var to = parts[1].trim();
+    aliases[from] = to;
+  });
+}
+
+try {
+  gen_index.write({
+    target_dir: targetName,
+    font: {
+      names: argv.fn.split(','),
+      family: argv.ff.trim(),
+      local: argv.fl.split(','),
+    },
+    aliases: aliases
+  });
+} catch(e) {
+  optimist.showHelp();
+  console.error(String(e));
+  process.exit(1);
+}
+
+
