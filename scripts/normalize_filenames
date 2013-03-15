@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+const path      = require('path'),
+      normalize_filenames 
+                = require('../lib/normalize_filenames'),
+      optimist  = require('optimist')
+                    .usage('usage: ' + path.basename(__filename) + ' <directory> [-d]')
+                    .describe('d', 'Perform a dry run without changing files on disk')
+                    .default('d', false),
+      argv      = optimist.argv;
+
+/**
+ * This is a helper script that will convert the names of the font files in
+ * a directory to make it simpler to work with connect-fonts
+ *
+ * All filenames will be:
+ *   => lowercased
+ *   => -webfont will be removed.
+ *   => it. will be changed to italics.
+ */
+
+
+
+var subdirName = process.argv[2];
+if (!subdirName) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+normalize_filenames(subdirName, argv.d, function(err, numFilesProcessed) {
+  console.log(numFilesProcessed + " files processed");
+});
+

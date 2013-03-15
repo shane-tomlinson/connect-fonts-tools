@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+const path          = require('path'),
+      fs            = require('fs')
+      font_metadata = require('../lib/font_metadata'),
+      optimist      = require('optimist')
+                          .usage('usage: ' + path.basename(__filename) +
+                                ' <filename> <target_dir>')
+      argv          = optimist.argv;
+
+var fileName = path.resolve(process.cwd(), argv._[0]);
+var targetName = argv._[1];
+
+if (!(fileName && targetName)) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+font_metadata(fileName, function(err, info) {
+  console.log(String(err));
+  for (var key in info) {
+    console.log(key + ": " + JSON.stringify(info[key], null, 2));
+  }
+});
