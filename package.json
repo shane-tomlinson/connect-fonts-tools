@@ -27,7 +27,8 @@
     "fs-extra": "0.5.0",
     "font": "git://github.com/shane-tomlinson/font.git#2a677050e1f403f650338e32fc167f6c30f46609",
     "ncp": "0.4.2",
-    "rimraf": "2.1.4"
+    "rimraf": "2.1.4",
+    "ttfinfo": "git://github.com/shane-tomlinson/ttfinfo.git#ab23fc39c71c7ca1763cbc6f2cd97734317326a9"
   },
   "scripts": {
 
