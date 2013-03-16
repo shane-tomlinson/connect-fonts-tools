@@ -7,7 +7,7 @@
 
 const path          = require('path'),
       packageJSON   = require('../lib/generate_package_json'),
-      licenses      = require('../lib/licenses'),
+      licenses      = require('../lib/licenses').licenses,
       optimist      = require('optimist')
                           .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
                           .alias('l', 'license')

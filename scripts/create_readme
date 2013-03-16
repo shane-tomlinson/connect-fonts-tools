@@ -7,7 +7,7 @@
 
 const path          = require('path'),
       gen_readme    = require('../lib/generate_readme'),
-      licenses      = require('../lib/licenses'),
+      licenses      = require('../lib/licenses').licenses,
       optimist      = require('optimist')
                           .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
                           .alias('l', 'license')
