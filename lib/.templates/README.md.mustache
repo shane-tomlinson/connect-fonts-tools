@@ -27,6 +27,13 @@ const font_pack  = require("{{package.name}}");
     <link href="/en/{{font.first_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
 ```
 
+{{#font.all_names}}
+Multiple fonts from the family can be included by using a comma separated list of fonts:
+```
+    <link href="/en/{{font.all_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
+```
+{{/font.all_names}}
+
 Available fonts:
 {{#font.names}}
 * {{.}}
@@ -39,6 +46,30 @@ Available fonts:
     }
 ```
 
+## Font Info
+{{font.family}}
+
+{{#font.description}}
+* Description: {{font.description}}
+{{/font.description}}
+{{#font.copyright}}
+* Copyright: {{font.copyright}}
+{{/font.copyright}}
+{{#font.trademark}}
+* Trademark: {{font.trademark}}
+{{/font.trademark}}
+{{#font.designer}}
+* Designer: {{font.designer}}
+{{/font.designer}}
+{{#font.url_designer}}
+* Designer URL: {{&font.url_designer}} 
+{{/font.url_designer}}
+{{#font.manufacturer}}
+* Vendor: {{font.manufacturer}}
+{{/font.manufacturer}}
+{{#font.url_vendor}}
+* Vendor URL: {{&font.url_vendor}}
+{{/font.url_vendor}}
 
 ## Development Info
 {{#package.homepage}}
@@ -71,11 +102,16 @@ Available fonts:
 
 ## License
 
-This software is licenced under version 2.0 of the MPL:
+Software: Licenced under version 2.0 of the MPL
 
   https://www.mozilla.org/MPL/
 
-Fonts are licensed under version {{license.version}} of the {{license.name}}
+{{#license.custom}}
+Fonts: {{&license.custom}}
+{{/license.custom}}
+{{#license.version}}
+Fonts: Licensed under version {{license.version}} of the {{license.name}}
+{{/license.version}}
 
   {{&license.url}}
 
