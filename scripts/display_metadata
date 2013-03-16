@@ -9,13 +9,12 @@ const path          = require('path'),
       font_metadata = require('../lib/font_metadata'),
       optimist      = require('optimist')
                           .usage('usage: ' + path.basename(__filename) +
-                                ' <filename> <target_dir>')
+                                ' <filename>')
       argv          = optimist.argv;
 
 var fileName = path.resolve(process.cwd(), argv._[0]);
-var targetName = argv._[1];
 
-if (!(fileName && targetName)) {
+if (!fileName) {
   optimist.showHelp();
   process.exit(1);
 }
