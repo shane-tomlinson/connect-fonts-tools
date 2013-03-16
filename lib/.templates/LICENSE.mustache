@@ -1,8 +1,13 @@
-This software is licenced under version 2.0 of the MPL
+Software: Licenced under version 2.0 of the MPL
 
   https://www.mozilla.org/MPL/
 
-Fonts are licensed under version {{license.version}} of the {{license.name}}
+{{#license.custom}}
+Fonts: {{&license.custom}}
+{{/license.custom}}
+{{#license.version}}
+Fonts: Licensed under version {{license.version}} of the {{license.name}}
+{{/license.version}}
 
   {{&license.url}}
 
