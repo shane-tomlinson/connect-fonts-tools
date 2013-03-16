@@ -9,13 +9,12 @@ const path          = require('path'),
       directory_metadata = require('../lib/directory_metadata'),
       optimist      = require('optimist')
                           .usage('usage: ' + path.basename(__filename) +
-                                ' <directory> <target_dir>'),
+                                ' <directory>'),
       argv          = optimist.argv;
 
 var directoryName = path.resolve(process.cwd(), argv._[0]);
-var targetName = argv._[1];
 
-if (!(directoryName && targetName)) {
+if (!directoryName) {
   optimist.showHelp();
   process.exit(1);
 }
