@@ -5,14 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
-      fs            = require('fs')
-      mkdirp        = require('mkdirp'),
-      ncp           = require('ncp').ncp,
-      directory_metadata
-                    = require('../lib/directory_metadata'),
+      directory     = require('../lib/directory'),
       gen_readme    = require('../lib/generate_readme'),
-      normalize_filenames
-                    = require('../lib/normalize_filenames'),
       licenses      = require('../lib/licenses'),
       optimist      = require('optimist')
                           .describe('ff', 'font family')
@@ -39,27 +33,16 @@ if (!(sourcePath && targetPath)) {
   process.exit(1);
 }
 
+processDirectory(sourcePath, targetPath, function(err) {
+  checkError(err);
+});
+
+
 function checkError(err) {
   if (err) {
     console.error(String(err));
     process.exit(1);
   }
-}
-
-/*
- * Copy source path to target path. Create target if needed.
- * Normalize all filenames in target. Leaves original directory untouched.
- */
-function prepareTargetDirectory(sourcePath, targetPath, done) {
-  mkdirp(targetPath, function(err) {
-    if (err) return done(err);
-
-    ncp(sourcePath, targetPath, function(err) {
-      if (err) return done(err);
-
-      normalize_filenames(targetPath, false, done);
-    });
-  });
 }
 
 function generateReadme(targetPath, argv, metaInfo, done) {
@@ -94,21 +77,17 @@ function generateReadme(targetPath, argv, metaInfo, done) {
 
 function processDirectory(sourcePath, targetPath, done) {
   var fontTargetPath = path.join(targetPath, 'fonts', 'default');
-  prepareTargetDirectory(sourcePath, fontTargetPath, function(err) {
+  directory.prepareTarget(sourcePath, fontTargetPath, function(err) {
+    if (err) return done(err);
+
+    directory.metadata(fontTargetPath, function(err, metaInfo) {
       if (err) return done(err);
 
-      directory_metadata(fontTargetPath, function(err, metaInfo) {
+      generateReadme(targetPath, argv, metaInfo, function(err) {
         if (err) return done(err);
 
-        generateReadme(targetPath, argv, metaInfo, function(err) {
-          if (err) return done(err);
-
-        });
       });
+    });
   });
 }
-
-processDirectory(sourcePath, targetPath, function(err) {
-  checkError(err);
-});
 
