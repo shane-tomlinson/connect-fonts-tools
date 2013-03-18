@@ -14,6 +14,9 @@
 * http://github.com/shane-tomlinson
 * @shane_tomlinson
 
+## Credits:
+subset.py comes from [Google Font Directory](http://code.google.com/p/googlefontdirectory/) and is licensed under the Apache 2.0 license. Its authors are Raph Levien and Dave Crossland.
+
 ## Getting involved:
 MOAR font packs! See
 [connect-fonts-opensans](https://github.com/shane-tomlinson/connect-fonts-opensans) for an example.
