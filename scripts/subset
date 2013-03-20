@@ -17,9 +17,9 @@ const path          = require('path'),
       argv          = optimist.argv;
 
 var sourcePath = path.resolve(__dirname, argv._[0]);
-var targetDir = argv._[1];
+var targetPath = path.resolve(__dirname, argv._[1]);
 
-if (!(sourcePath && targetDir)) {
+if (!(sourcePath && targetPath)) {
   optimist.showHelp();
   process.exit(1);
 }
@@ -42,30 +42,10 @@ else {
   subsets = [argv.s];
 }
 
-subsetAll(subsets, function(err) {
+subset.subset(subsets, sourcePath, targetPath, function(err) {
   if (err) {
     console.error(String(err));
     process.exit(1);
   }
 });
-
-function getTargetPath(source, subset) {
-  return path.join(targetDir, path.basename(sourcePath, '.ttf') + '-' + subset + '.ttf');
-}
-
-function subsetAll(subsets, done) {
-  processNext();
-
-  function processNext() {
-    var next = subsets.shift();
-    if (!next) return done();
-
-    var targetPath = getTargetPath(sourcePath, next);
-    subset.subset(next, sourcePath, targetPath, function(err) {
-      if (err) return done(err);
-      processNext();
-    });
-  }
-}
-
 
