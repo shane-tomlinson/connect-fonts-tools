@@ -12,8 +12,10 @@ const path          = require('path'),
                           .describe('s', 'subset to create. Valid subsets: \n\t' + SUPPORTED_SUBSETS.join(',\n\t') + 
                           '\nCombination subsets are created by joining subset names with `+`. e.g.: latin+cyrillic, ')
                           .demand('s')
+                          .describe('o', 'place subsets into subdirectories of target')
+                          .boolean('o')
                           .usage('usage: ' + path.basename(__filename) +
-                                ' <filename> <target_dir> -s <subset>')
+                                ' <filename> <target_dir> -s <subset> [-o]')
       argv          = optimist.argv;
 
 var sourcePath = path.resolve(__dirname, argv._[0]);
@@ -42,7 +44,7 @@ else {
   subsets = [argv.s];
 }
 
-subset.subset(subsets, sourcePath, targetPath, function(err) {
+subset.subset(subsets, sourcePath, targetPath, argv.o, function(err) {
   if (err) {
     console.error(String(err));
     process.exit(1);
