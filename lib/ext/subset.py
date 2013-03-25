@@ -140,6 +140,25 @@ def subset_font(font_in, font_out, unicodes, opts):
 def getsubset(subset):
     subsets = subset.split('+')
 
+    punc  = [0x00a2] # cent
+    punc += [0x00a3] # sterling
+    punc += [0x00a5] # yen
+    punc += [0x00a9] # copyright
+    punc += [0x00ad] # softhyphen
+    punc += [0x00ae] # registered
+    punc += [0x00b4] # accuteaccent
+
+    punc += [0x2010] # hyphen
+    punc += [0x2011] # nonbreakinghyphen
+    punc += [0x2012] # figuredash
+    punc += [0x2013] # endash
+    punc += [0x2014] # emdash
+    punc += [0x2015] # horizontalbar
+    punc += [0x2026] # horizontalellipsis
+    punc += [0x20ac] # euro
+    punc += [0x2122] # trademark
+    punc += [0x25a0] # blacksquare
+
     quotes  = [0x2013] # endash
     quotes += [0x2014] # emdash
     quotes += [0x2018] # quoteleft
@@ -171,9 +190,111 @@ def getsubset(subset):
     latin += [0xeffd] # PUA: Font version number
     latin += [0xf000] # PUA: font ppem size indicator: run `ftview -f 1255 10 Ubuntu-Regular.ttf` to see it in action!
 
+    dieresis  = [0x00a8] # dieresis *
+    dieresis += [0x00c4] # ADieresis *
+    dieresis += [0x00cb] # Edieresis *
+    dieresis += [0x00cf] # Idieresis *
+    dieresis += [0x00d6] # ODieresis *
+    dieresis += [0x00dc] # Udieresis *
+    dieresis += [0x00e4] # adieresis *
+    dieresis += [0x00eb] # edieresis *
+    dieresis += [0x00ef] # idieresis *
+    dieresis += [0x00f6] # odieresis *
+    dieresis += [0x00fc] # udieresis *
+    dieresis += [0x00ff] # ydieresis *
+
+    circumflex  = [0x00c2] # Acircumflex *
+    circumflex += [0x00ca] # Ecircumflex *
+    circumflex += [0x00ce] # Icircumflex *
+    circumflex += [0x00d4] # Ocircumflex *
+    circumflex += [0x00db] # Ucircumflex *
+    circumflex += [0x00e2] # acircumflex *
+    circumflex += [0x00ea] # ecircumflex *
+    circumflex += [0x00ee] # icircumflex *
+    circumflex += [0x00f4] # ocircumflex *
+    circumflex += [0x00fb] # ucircumflex *
+    circumflex += [0x02c6] # circumflex *
+
+    acute  = [0x00c1] # Aacute *
+    acute += [0x00c9] # Eacute *
+    acute += [0x00cd] # Iacute *
+    acute += [0x00d3] # Oacute *
+    acute += [0x00da] # Uacute *
+    acute += [0x00e1] # aacute *
+    acute += [0x00e9] # eacute *
+    acute += [0x00ed] # iacute *
+    acute += [0x00f3] # oacute *
+    acute += [0x00fa] # uacute *
+
     result = quotes
     if 'ascii' in subset:
         result += basic
+    if 'en' in subset:
+        result += basic
+        result += punc
+    if 'es' in subset:
+        result += basic
+        result += punc
+        result += acute
+        result += [0x00a1] # exclamdown *
+        result += [0x00a8] # dieresis *
+        result += [0x00ab] # guillemotleft *
+
+        result += [0x00b8] # cedilla *
+        result += [0x00bb] # guillemotright *
+        result += [0x00bf] # questiondown *
+        result += [0x00d1] # Ntilde *
+        result += [0x00dc] # UDieresis *
+        result += [0x00f1] # ntilde *
+        result += [0x00fc] # udieresis *
+        result += [0x0131] # dotlessi *
+        result += [0x02c6] # circumflex *
+        result += [0x02da] # ring *
+        result += [0x02dc] # tilde *
+
+    if 'de' in subset:
+        result += basic
+        result += punc
+        result += dieresis
+        result += [0x00ab] # guillemotleft *
+
+        result += [0x00b8] # cedilla *
+        result += [0x00bb] # guillemotright *
+        result += [0x00df] # germandbls *
+        result += [0x02c6] # circumflex *
+        result += [0x02da] # ring *
+        result += [0x02dc] # tilde *
+
+    if 'fr' in subset:
+        result += basic
+        result += punc
+        result += dieresis
+        result += circumflex
+        result += [0x00a0] # uni00A0 *
+        result += [0x00ab] # guillemotleft *
+        result += [0x00b8] # cedilla *
+        result += [0x00bb] # guillemotright *
+        result += [0x00c0] # Agrave *
+        result += [0x00c6] # AE
+        result += [0x00c7] # Ccedillia *
+        result += [0x00c8] # Egrave *
+        result += [0x00c9] # Eacute *
+        result += [0x00d9] # Ugrave *
+        result += [0x00e0] # agrave *
+        result += [0x00e6] # AE
+        result += [0x00e7] # ccedillia *
+        result += [0x00e8] # egrave *
+        result += [0x00e9] # eacute *
+        result += [0x00f9] # ugrave *
+
+        result += [0x0131] # dotlessi *
+        result += [0x0152] # OE *
+        result += [0x0153] # oe *
+
+        result += [0x02da] # ring *
+        result += [0x02dc] # tilde *
+
+
     if 'latin' in subset:
         result += basic
         result += latin
