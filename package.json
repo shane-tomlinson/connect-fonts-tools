@@ -1,15 +1,15 @@
 {
   "Author": "Shane Tomlinson <shane@shanetomlinson.com> (https://shanetomlinson.com)",
-  "name": "conntect-fonts-tools",
-  "description": "Utility scripts for working with conntect-fonts font packs",
-  "keywords": ["font", "font-face", "CSS", "conntect-fonts-tools"],
-  "homepage": "https://github.com/shane-tomlinson/conntect-fonts-tools",
+  "name": "connect-fonts-tools",
+  "description": "Utility scripts for working with connect-fonts font packs",
+  "keywords": ["font", "font-face", "CSS", "connect-fonts-tools"],
+  "homepage": "https://github.com/shane-tomlinson/connect-fonts-tools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shane-tomlinson/conntect-fonts-tools.git"
+    "url": "https://github.com/shane-tomlinson/connect-fonts-tools.git"
   },
   "bugs": {
-    "url": "https://github.com/shane-tomlinson/conntect-fonts-tools/issues"
+    "url": "https://github.com/shane-tomlinson/connect-fonts-tools/issues"
   },
   "version": "0.0.1",
   "engines": {
