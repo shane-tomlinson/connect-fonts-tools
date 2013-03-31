@@ -5,28 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
+      generic_config        
+                    = require('../lib/generic_config')
       gen_license   = require('../lib/generate_license'),
       licenses      = require('../lib/licenses').licenses,
-      optimist      = require('optimist')
-                          .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
-                          .alias('l', 'license')
+      program       = require('commodore')
+                          .option('-l, --license <license>', 'Font License: ' + Object.keys(licenses).join(', '))
                           .demand('l')
-                          .usage('usage: ' + path.basename(__filename) +
-                                ' <target_dir> [options]'),
-      argv          = optimist.argv;
+                          .option('--tp <target_path>', 'Target Path')
+                          .demand('tp')
+                          .parse(process.argv);
 
-var targetName = argv._[0];
-if (!targetName) {
-  optimist.showHelp();
-  process.exit(1);
-}
-
-if (!licenses[argv.l]) {
-  optimist.showHelp();
+if (!licenses[program.license]) {
+  program.showHelp();
   process.exit(1);
 }
 
 gen_license.write({
-  target_dir: targetName,
-  license: licenses[argv.l]
+  target_dir: generic_config.resolve(process.cwd(), program.tp),
+  license: licenses[program.license]
+}, function(err) {
+  if (err) {
+    console.error(String(err));
+    process.exit(1);
+  }
 });

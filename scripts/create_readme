@@ -43,13 +43,7 @@ const path          = require('path'),
                           .load(generic_config.config_path)
                           .parse(process.argv);
 
-function getUserHome() {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-program.target_dir = resolve(process.cwd(), program.tp);
-
-console.log(JSON.stringify(program, null, 2));
+program.target_dir = generic_config.resolve(process.cwd(), program.tp);
 
 if (!licenses[program.license]) {
   program.outputHelp();
@@ -61,10 +55,4 @@ configurator(program, undefined, function(err, config) {
   gen_readme.write(config);
 });
 
-function resolve(from, to) {
-  if (to === ".") to = "";
-  else if (/^~/.test(to)) to = to.replace(/^~/, getUserHome());
-
-  return path.resolve(from, to);
-}
 

@@ -8,62 +8,52 @@
 const path          = require('path'),
       packageJSON   = require('../lib/generate_package_json'),
       licenses      = require('../lib/licenses').licenses,
-      optimist      = require('optimist')
-                          .describe('l', 'Font License: ' + Object.keys(licenses).join(', '))
-                          .alias('l', 'license')
+      generic_config        
+                    = require('../lib/generic_config')
+      configurator  = require('../lib/configurator')
+      program       = require('commodore')
+                          .option('-l, --license <license>', 'Font License: ' + Object.keys(licenses).join(', '))
                           .demand('l')
-                          .describe('fn', 'font name(s) - comma separated list if more than one')
+                          .option('--fn <font_names>', 'font name(s) - comma separated list if more than one')
                           .demand('fn')
-                          .describe('ff', 'font family')
+                          .option('--ff <font_family>', 'font family')
                           .demand('ff')
-                          .describe('an', 'Author name')
+                          .option('--an <author_name>', 'Author name')
+                          .loadable('an')
                           .demand('an')
-                          .describe('ae', 'Author email(s) - comma separated list if more than one')
+                          .option('--ae <author_email>', 
+                              'Author email(s) - comma separated list if more than one')
+                          .loadable('ae')
                           .demand('ae')
-                          .describe('au', 'Author url(s) - comma separated list if more than one')
-                          .demand('au')
-                          .describe('at', 'Author twitter')
-                          .describe('ag', 'Author github')
-                          .describe('pn', 'Package name')
+                          .option('--au <author_urls>', 
+                              'Author url(s) - comma separated list if more than one')
+                          .loadable('au')
+                          .option('--at <author_twitter>', 'Author twitter')
+                          .loadable('at')
+                          .option('--ag <author_github>', 'Author github')
+                          .loadable('ag')
+                          .option('--pn <package_name>', 'Package name')
                           .demand('pn')
-                          .describe('ph', 'Project homepage URL')
-                          .describe('pr', 'Project repo URL')
-                          .describe('pb', 'Project bug tracker URL')
-                          .usage('usage: ' + path.basename(__filename) +
-                                ' <target_dir> [options]'),
-      argv          = optimist.argv;
+                          .option('--ph <project_homepage_url>', 'Project homepage URL')
+                          .option('--pr <project_repo_url>', 'Project repo URL')
+                          .option('--pb <project_bugtracker_url>', 'Project bug tracker URL')
+                          .option('-c <credits>', 'Credits')
+                          .option('--tp <target_path>', 'Target Path')
+                          .demand('tp')
+                          .load(generic_config.config_path)
+                          .parse(process.argv);
 
-var targetName = argv._[0];
-if (!targetName) {
-  optimist.showHelp();
+
+program.target_dir = generic_config.resolve(process.cwd(), program.tp);
+
+if (!licenses[program.license]) {
+  program.outputHelp();
   process.exit(1);
 }
 
-if (!licenses[argv.l]) {
-  optimist.showHelp();
-  process.exit(1);
-}
 
-packageJSON.write({
-  target_dir: targetName,
-  author: {
-    name: argv.an,
-    emails: argv.ae,
-    urls: argv.au,
-    githubs: argv.ag,
-    twitter: argv.at
-  },
-  package: {
-    name: argv.pn,
-    homepage: argv.ph || false,
-    repourl: argv.pr || false,
-    bugsurl: argv.pb || false
-  },
-  font: {
-    names: argv.fn,
-    family: argv.ff
-  },
-  license: licenses[argv.l]
+configurator(program, undefined, function(err, config) {
+  packageJSON.write(config);
 });
 
 

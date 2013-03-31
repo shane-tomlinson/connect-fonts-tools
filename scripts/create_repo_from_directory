@@ -37,12 +37,9 @@ const path          = require('path'),
                           .load(generic_config.config_path)
                           .parse(process.argv);
 
-function getUserHome() {
-  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
-}
 
-var sourcePath = resolve(process.cwd(), program.sp);
-var targetPath = resolve(process.cwd(), program.tp);
+var sourcePath = generic_config.resolve(process.cwd(), program.sp);
+var targetPath = generic_config.resolve(process.cwd(), program.tp);
 
 directory.process(sourcePath, targetPath, program, function(err) {
   if (err) {
@@ -51,9 +48,4 @@ directory.process(sourcePath, targetPath, program, function(err) {
   }
 });
 
-function resolve(from, to) {
-  if (/^~/.test(to)) to = to.replace(/^~/, getUserHome());
-
-  return path.resolve(from, to);
-}
 
