@@ -8,7 +8,8 @@ const path      = require('path'),
       normalize_filenames 
                 = require('../lib/normalize_filenames'),
       optimist  = require('optimist')
-                    .usage('usage: ' + path.basename(__filename) + ' <directory> [-d]')
+                    .usage('\nNormalize the filenames of all .ttf files in a directory\n\n' +
+                           'usage: ' + path.basename(__filename) + ' <directory> [-d]')
                     .describe('d', 'Perform a dry run without changing files on disk')
                     .default('d', false),
       argv      = optimist.argv;

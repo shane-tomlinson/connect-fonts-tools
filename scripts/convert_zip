@@ -10,7 +10,8 @@ const fs            = require('fs-extra'),
       mkdirp        = require('mkdirp'),
       child_process = require('child_process'),
       optimist      = require('optimist')
-                          .usage('usage: ' + path.basename(__filename) +
+                          .usage('\nPrepare a FontSquirrel .zip file to be a font pack\n\n' +
+                                'usage: ' + path.basename(__filename) +
                                 ' <filename> <target_dir> [-d]')
                           .describe('d', 'Perform a dry run without' +
                                 ' changing files on disk')

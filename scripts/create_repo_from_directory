@@ -9,6 +9,7 @@ const path          = require('path'),
       generic_config        
                     = require('../lib/generic_config')
       program       = require('commodore')
+                          .description('create a connect-fonts font pack from the .ttf fonts located in a directory')
                           .version('0.0.1')
                           .option('--an <author_name>', 'Author name')
                           .loadable('an')

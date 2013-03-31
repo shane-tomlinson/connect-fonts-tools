@@ -10,6 +10,7 @@ const path          = require('path'),
       gen_license   = require('../lib/generate_license'),
       licenses      = require('../lib/licenses').licenses,
       program       = require('commodore')
+                          .description('Create a LICENSE file')
                           .option('-l, --license <license>', 'Font License: ' + Object.keys(licenses).join(', '))
                           .demand('l')
                           .option('--tp <target_path>', 'Target Path')

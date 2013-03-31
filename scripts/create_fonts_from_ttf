@@ -8,7 +8,8 @@ const path          = require('path'),
       generate_fonts_from_ttf
                     = require('../lib/generate_fonts_from_ttf')
       optimist      = require('optimist')
-                          .usage('usage: ' + path.basename(__filename) +
+                          .usage('\nCreate web fonts from a .ttf\n\n' + 
+                                'usage: ' + path.basename(__filename) +
                                 ' <filename> <target_dir>')
       argv          = optimist.argv;
 

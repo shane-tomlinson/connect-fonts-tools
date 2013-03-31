@@ -12,6 +12,7 @@ const path          = require('path'),
                     = require('../lib/generic_config')
       configurator  = require('../lib/configurator')
       program       = require('commodore')
+                          .description('Create a README.md file')
                           .option('-l, --license <license>', 'Font License: ' + Object.keys(licenses).join(', '))
                           .demand('l')
                           .option('--fn <font_names>', 'font name(s) - comma separated list if more than one')
