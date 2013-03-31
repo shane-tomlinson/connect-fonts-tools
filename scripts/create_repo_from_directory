@@ -5,37 +5,56 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
+      CONFIG_PATH   = path.join(getUserHome(), ".connect-fonts", "config.json");
       directory     = require('../lib/directory'),
-      optimist      = require('optimist')
-                          .describe('ff', 'font family')
-                          .describe('an', 'Author name')
-                          .describe('ae', 'Author email(s) - comma separated list if more than one')
+      program       = require('commodore')
+                          .version('0.0.1')
+                          .option('--an <author_name>', 'Author name')
+                          .loadable('an')
+                          .demand('an')
+                          .option('--ae <author_email>', 
+                              'Author email(s) - comma separated list if more than one')
+                          .loadable('ae')
                           .demand('ae')
-                          .describe('au', 'Author url(s) - comma separated list if more than one')
-                          .describe('at', 'Author twitter')
-                          .describe('ag', 'Author github')
-                          .describe('pn', 'Package name')
+                          .option('--au <author_urls>', 
+                              'Author url(s) - comma separated list if more than one')
+                          .loadable('au')
+                          .option('--at <author_twitter>', 'Author twitter')
+                          .loadable('at')
+                          .option('--ag <author_github>', 'Author github')
+                          .loadable('ag')
+                          .option('--pn <package_name>', 'Package name')
                           .demand('pn')
-                          .describe('ph', 'Project homepage URL')
-                          .describe('pr', 'Project repo URL')
-                          .describe('pb', 'Project bug tracker URL')
-                          .describe('c', 'Credits')
-                          .usage('usage: ' + path.basename(__filename) +
-                                ' <directory> <target_dir>'),
-      argv          = optimist.argv;
+                          .option('--ph <project_homepage_url>', 'Project homepage URL')
+                          .option('--pr <project_repo_url>', 'Project repo URL')
+                          .option('--pb <project_bugtracker_url>', 'Project bug tracker URL')
+                          .option('-c <credits>', 'Credits')
+                          .option('--sp <source_path>', 'Source Path')
+                          .demand('sp')
+                          .option('--tp <target_path>', 'Target Path')
+                          .demand('tp')
+                          .load(CONFIG_PATH)
+                          .parse(process.argv);
 
-var sourcePath = path.resolve(process.cwd(), argv._[0]);
-var targetPath = path.resolve(process.cwd(), argv._[1]);
-if (!(sourcePath && targetPath)) {
-  optimist.showHelp();
-  process.exit(1);
+console.log(JSON.stringify(program, null, 2));
+
+function getUserHome() {
+  return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-directory.process(sourcePath, targetPath, argv, function(err) {
+var sourcePath = resolve(process.cwd(), program.sp);
+var targetPath = resolve(process.cwd(), program.tp);
+
+directory.process(sourcePath, targetPath, program, function(err) {
   if (err) {
     console.error(String(err));
     process.exit(1);
   }
 });
 
+function resolve(from, to) {
+  if (/^~/.test(to)) to = to.replace(/^~/, getUserHome());
+
+  return path.resolve(from, to);
+}
 
