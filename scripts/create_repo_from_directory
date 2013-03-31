@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
-      CONFIG_PATH   = path.join(getUserHome(), ".connect-fonts", "config.json");
       directory     = require('../lib/directory'),
+      generic_config        
+                    = require('../lib/generic_config')
       program       = require('commodore')
                           .version('0.0.1')
                           .option('--an <author_name>', 'Author name')
@@ -33,10 +34,8 @@ const path          = require('path'),
                           .demand('sp')
                           .option('--tp <target_path>', 'Target Path')
                           .demand('tp')
-                          .load(CONFIG_PATH)
+                          .load(generic_config.config_path)
                           .parse(process.argv);
-
-console.log(JSON.stringify(program, null, 2));
 
 function getUserHome() {
   return process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
