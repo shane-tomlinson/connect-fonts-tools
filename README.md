@@ -1,9 +1,15 @@
 # connect-fonts-tools
 
+A collection of tools to work with connect-fonts.
 
 ## Usage
 
+First, run `scripts/setup` to set up author information that can be used to create multiple font packs.
+
 ## Creating a Font Pack
+
+`scripts/create_fontpack` will create a font pack out of all .ttf files in the specified directory.
+
 ## Author:
 * Shane Tomlinson
 * shane@shanetomlinson.com
