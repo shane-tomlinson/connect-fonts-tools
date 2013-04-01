@@ -11,16 +11,12 @@ const path          = require('path'),
       licenses      = require('../lib/licenses').licenses,
       program       = require('commodore')
                           .description('Create a LICENSE file')
-                          .option('-l, --license <license>', 'Font License: ' + Object.keys(licenses).join(', '))
+                          .option('-l, --license <license>', 'font license')
+                          .oneof('license', Object.keys(licenses))
                           .demand('l')
-                          .option('--tp <target_path>', 'Target Path')
+                          .option('--tp <target_path>', 'target path')
                           .demand('tp')
                           .parse(process.argv);
-
-if (!licenses[program.license]) {
-  program.showHelp();
-  process.exit(1);
-}
 
 gen_license.write({
   target_dir: generic_config.resolve(process.cwd(), program.tp),
