@@ -12,11 +12,16 @@ Run `scripts/setup` to set up generic author information that can be used to cre
 
 `scripts/create_fontpack` creates a connect-fonts compatible font pack from the .ttf files in a source directory. If you have already run `scripts/setup`, creating a font pack is easy:
 
-`./scripts/create_fontpack --pn <pack_name> --sp <source_path> --tp <target_path>`
+```bash
+    ./scripts/create_fontpack --pn <pack_name> --sp <source_path> --tp <target_path>
+```
+
 
 If the font pack is for public use, additional parameters can be specified that will be placed inside the font pack's package.json and README.md files.
 
-`./scripts/create_fontpack --pn <pack_name> --ph <pack_homepage_url> --pr <pack_repo_url> --pb <pack_bugtracker_url> --sp <source_path> --tp <target_path>`
+```bash
+    ./scripts/create_fontpack --pn <pack_name> --ph <pack_homepage_url> --pr <pack_repo_url> --pb <pack_bugtracker_url> --sp <source_path> --tp <target_path>
+```
 
 Once the pack is created, it can be published to npm:
 
