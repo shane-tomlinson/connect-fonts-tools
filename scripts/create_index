@@ -15,7 +15,7 @@ const path          = require('path'),
                           .describe('ff', 'font family')
                           .demand('ff')
                           .describe('a', 'aliases - comma separated list of aliased lcoales to their subdirectories - eg: de:german')
-                          .usage('\nCreate an index.js file\n\n' +
+                          .usage('\nCreate an font pack index.js file\n\n' +
                                 'usage: ' + path.basename(__filename) +
                                 ' <target_dir> [options]'),
       argv          = optimist.argv;
