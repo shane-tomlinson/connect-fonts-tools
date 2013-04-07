@@ -5,49 +5,101 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
+      fs            = require('fs'),
       subset        = require('../lib/subset'),
+      generate_fonts_from_ttf
+                    = require('../lib/generate_fonts_from_ttf')
+      generic_config        
+                    = require('../lib/generic_config'),
       SUPPORTED_SUBSETS
-                    = ['all'].concat(subset.SUPPORTED_SUBSETS),
-      optimist      = require('optimist')
-                          .describe('s', 'subset to create. Valid subsets: \n\t' + SUPPORTED_SUBSETS.join(',\n\t') + 
-                          '\nCombination subsets are created by joining subset names with `+`. e.g.: latin+cyrillic, ')
-                          .demand('s')
-                          .describe('o', 'place subsets into subdirectories of target')
-                          .boolean('o')
-                          .usage('usage: ' + path.basename(__filename) +
-                                ' <filename> <target_dir> -s <subset> [-o]')
-      argv          = optimist.argv;
+                    = subset.SUPPORTED_SUBSETS,
+      program       = require('commodore')
+                          .description('Create a locale-optimized font set')
+                          .option('-s, --ss <subset>', 'subset to create.')
+                          .demand('ss')
+                          .comboof('ss', SUPPORTED_SUBSETS)
+                          .option('--sp <source_path>', 'Source Path')
+                          .demand('sp')
+                          .option('--tp <target_path>', 'Target Path')
+                          .demand('tp')
+                          .option('-o', 'place subsets into subdirectories of target')
+                          .option('--wf', 'create web fonts (svg, eot, woff) of each subset')
+                          .parse(process.argv);
 
-var sourcePath = path.resolve(__dirname, argv._[0]);
-var targetPath = path.resolve(__dirname, argv._[1]);
+var sourcePath = generic_config.resolve(process.cwd(), program.sp);
+var targetPath = generic_config.resolve(process.cwd(), program.tp);
 
-if (!(sourcePath && targetPath)) {
-  optimist.showHelp();
+fs.stat(sourcePath, function(err, stats) {
+  if (err) showErrorAndExit(err);
+
+  if (stats.isDirectory()) {
+    ls(sourcePath, /\.ttf$/i, true, function(err, files) {
+      if (err) showErrorAndExit(err);
+
+      var ttfPaths = files.map(function(fileName) {
+        return path.join(sourcePath, fileName);
+      });
+
+      subsetNext();
+
+      function subsetNext() {
+        var ttfPath = ttfPaths.shift();
+        if (!ttfPath) return;
+
+        subsetFont(ttfPath, function(err) {
+          if (err) showErrorAndExit(err);
+          subsetNext();
+        });
+      }
+    });
+  } else {
+    subsetFont(sourcePath, function(err) {
+      if (err) showErrorAndExit(err);
+    });
+  }
+});
+
+function subsetFont(sourcePath, done) {
+  subset.subset(program.ss, sourcePath, targetPath, program.O, function(err, subsettedFonts) {
+    if (err) showErrorAndExit(err);
+
+    if (program.wf) {
+      createNextWebfont();
+    }
+
+    function createNextWebfont() {
+      var subsettedFont = subsettedFonts.shift();
+      if (!subsettedFont) return done(null);
+
+      generate_fonts_from_ttf.write(subsettedFont, path.dirname(subsettedFont), function(err) {
+        if (err) return done(err);
+
+        createNextWebfont();
+      });
+    }
+  });
+}
+
+function showErrorAndExit(err) {
+  console.error(String(err));
   process.exit(1);
 }
 
-// check subsets
-var declaredSubsets = argv.s.split('+');
-declaredSubsets.forEach(checkSubset);
-function checkSubset(subset) {
-  if (SUPPORTED_SUBSETS.indexOf(subset) === -1) {
-    optimist.showHelp();
-    process.exit(1);
-  }
-}
+function ls(target, matchRegExp, warn, done) {
+  fs.readdir(target, function(err, files) {
+    if (err) return done(err);
 
-var subsets = [].concat(SUPPORTED_SUBSETS);
-if (argv.s === 'all') {
-  subsets.splice(subsets.indexOf('all'), 1);
-}
-else {
-  subsets = [argv.s];
-}
+    var matches = [];
+    files.forEach(function(fileName) {
+      fileName = fileName.trim();
+      if (matchRegExp.test(fileName)) {
+        matches.push(fileName);
+      } else if (warn) {
+        console.warn(fileName + " does not match: " + matchRegExp);
+      }
+    });
 
-subset.subset(subsets, sourcePath, targetPath, argv.o, function(err) {
-  if (err) {
-    console.error(String(err));
-    process.exit(1);
-  }
-});
+    done(null, matches);
+  });
+};
 

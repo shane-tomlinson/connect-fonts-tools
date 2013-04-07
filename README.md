@@ -8,19 +8,19 @@ A collection of tools to create [connect-fonts](https://github.com/shane-tomlins
 
 Run `scripts/setup` to set up generic author information that can be used to create multiple font packs.
 
-### Creating a Font Pack
+### Create a Font Pack
 
 `scripts/create_fontpack` creates a connect-fonts compatible font pack from the .ttf files in a source directory. If you have already run `scripts/setup`, creating a font pack is easy:
 
 ```bash
-    ./scripts/create_fontpack --pn <pack_name> --sp <source_path> --tp <target_path>
+<path_to_connect_fonts_tools>/scripts/create_fontpack --pn <pack_name> --sp <source_path> --tp <target_path>
 ```
 
 
 If the font pack is for public use, additional parameters can be specified that will be placed inside the font pack's package.json and README.md files.
 
 ```bash
-    ./scripts/create_fontpack --pn <pack_name> --ph <pack_homepage_url> --pr <pack_repo_url> --pb <pack_bugtracker_url> --sp <source_path> --tp <target_path>
+<path_to_connect_fonts_tools>/scripts/create_fontpack --pn <pack_name> --ph <pack_homepage_url> --pr <pack_repo_url> --pb <pack_bugtracker_url> --sp <source_path> --tp <target_path>
 ```
 
 Once the pack is created, it can be published to npm:
@@ -40,6 +40,15 @@ If the font pack is not to be published to the npm repository, it can be install
 ```bash
 cd <target_project_dir>
 npm install <font_pack_directory>
+```
+
+### Subset an already installed font pack
+
+`scripts/subset` can be used to subset an already installed font pack into fonts that are locale-optimised.
+
+```bash
+cd node_modules/<font_directory>/fonts/default
+<path_to_connect_fonts_tools>/script/subset --ss=<subsets> --sp <font_name or .> --tp ../ -o --wf
 ```
 
 ### Other tools
