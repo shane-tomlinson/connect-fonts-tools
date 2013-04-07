@@ -28,7 +28,7 @@
     "ttfinfo": "git://github.com/shane-tomlinson/ttfinfo.git#907c9ff981db8b6a6ea2bdfdf793ab2e96105cf9",
     "async": "0.2.6",
     "easierobject": "0.0.1",
-    "commodore": "git://github.com/shane-tomlinson/commodore.git#14a2bc50116352326b07098b16d463dac45d34f2",
+    "commodore": "0.0.1",
     "prompt": "0.2.9"
   },
   "bin": {
