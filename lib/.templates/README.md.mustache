@@ -5,17 +5,17 @@
 ## Usage
 
 1. Include [connect-fonts](https://github.com/shane-tomlinson/connect-fonts) in a node module.
-```
+```js
 const font_middleware = require("connect-fonts");
 ```
 
 2. Include the font packs that you want to serve.
-```
+```js
 const font_pack  = require("{{package.name}}");
 ```
 
 3. Add a middleware by calling the `setup` function.
-```
+```js
     app.use(font_middleware.setup({
       fonts: [ font_pack ],
       allow_origin: "https://exampledomain.com"
@@ -23,14 +23,14 @@ const font_pack  = require("{{package.name}}");
 ```
 
 4. Add a link tag to include the font CSS.
-```
-    <link href="/en/{{font.first_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
+```html
+<link href="/{{font.first_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
 ```
 
 {{#font.all_names}}
 Multiple fonts from the family can be included by using a comma separated list of fonts:
-```
-    <link href="/en/{{font.all_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
+```html
+<link href="/{{font.all_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
 ```
 {{/font.all_names}}
 
@@ -38,6 +38,16 @@ Available fonts:
 {{#font.names}}
 * {{.}}
 {{/font.names}}
+
+Locale-optimised font sets can be served by specifying the locale in the fonts.css URL.
+```html
+<link href="/latin/{{font.first_names}}/fonts.css" type="text/css" rel="stylesheet"/ >
+```
+
+Available subsets:
+{{#meta_info.subsets}}
+* {{.}}
+{{/meta_info.subsets}}
 
 5. Set your CSS up to use the new font by using the "{{font.family}}" font-family.
 ```
