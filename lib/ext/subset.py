@@ -252,6 +252,44 @@ def getsubset(subset):
         result += [0x02da] # ring *
         result += [0x02dc] # tilde *
 
+    # Taken from:
+    # http://en.wikipedia.org/wiki/Portuguese_alphabet
+    # http://symbolcodes.tlt.psu.edu/bylanguage/portuguese.html
+    if 'pt' in subset:
+        result += basic
+        result += punc
+        result += acute
+
+        result += [0x00ab] # guillemotleft *
+        result += [0x00bb] # guillemotright *
+
+        result += [0x00aa] # ordfeminine *
+        result += [0x00ba] # ordmasculine *
+
+        result += [0x00c2] # Acircumflex *
+        result += [0x00ca] # Ecircumflex *
+        result += [0x00d4] # Ocircumflex *
+        result += [0x00e2] # acircumflex *
+        result += [0x00ea] # ecircumflex *
+        result += [0x00f4] # ocircumflex *
+
+        result += [0x00c3] # Atilde *
+        result += [0x00e3] # atilde *
+        result += [0x00d5] # Otilde *
+        result += [0x00f5] # otilde *
+
+        result += [0x00dc] # Udiaeresis *
+        result += [0x00fc] # udiaeresis *
+
+        result += [0x00c0] # Agrave *
+        result += [0x00e0] # agrave *
+        result += [0x00d2] # Ograve *
+        result += [0x00f2] # ograve *
+
+        result += [0x00b8] # cedilla *
+        result += [0x00c7] # Ccedilla *
+        result += [0x00e7] # ccedilla *
+
     if 'de' in subset:
         result += basic
         result += punc
