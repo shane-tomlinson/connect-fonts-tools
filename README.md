@@ -78,8 +78,8 @@ In Linux or Windows, see the directions provided by the [Open Font Library](http
 * stomlinson@mozilla.com
 * set117@yahoo.com
 * https://shanetomlinson.com
-* http://github.com/stomlinson
 * http://github.com/shane-tomlinson
+* http://github.com/stomlinson
 * @shane_tomlinson
 
 ## Credits:

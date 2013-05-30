@@ -3,6 +3,27 @@ const path = require("path");
 module.exports = {
   "root": path.join(__dirname, "fonts"),
 
+  {{#package}}
+  // Package info
+  "package": {{{package}}},
+  {{/package}}
+  
+  {{#author}}
+  // Package author info
+  "author": {{{author}}},
+  {{/author}}
+  
+  {{#license}}
+  // package license info
+  "license": {{{license}}},
+  {{/license}}
+
+  {{#font_common}}
+  // Common font information
+  "font_common": {{{font_common}}},
+  {{/font_common}}
+
+
   // where to find a locale's fonts in the fonts directory
   "locale-to-subdirs": { 
   {{#aliases}} 
