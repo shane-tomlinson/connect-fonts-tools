@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const path          = require('path'),
+      strformat     = require('strformat'),
       directory     = require('../lib/directory'),
       generic_config        
                     = require('../lib/generic_config'),
@@ -28,7 +29,6 @@ const path          = require('path'),
                           .option('--ag <author_github>', 'Author github')
                           .loadable('ag')
                           .option('--pn <package_name>', 'Package name')
-                          .demand('pn')
                           .option('--ph <project_homepage_url>', 'Project homepage URL')
                           .option('--pr <project_repo_url>', 'Project repo URL')
                           .option('--pb <project_bugtracker_url>', 'Project bug tracker URL')
@@ -36,21 +36,106 @@ const path          = require('path'),
                           .option('--sp <source_path>', 'Source Path')
                           .demand('sp')
                           .option('--tp <target_path>', 'Target Path')
-                          .demand('tp')
                           .option('-s, --ss <subsets>', 'subset(s) to create.')
                           .comboof('ss', SUPPORTED_SUBSETS)
                           .load(generic_config.config_path)
                           .parse(process.argv);
 
 
-var sourcePath = generic_config.resolve(process.cwd(), program.sp);
-var targetPath = generic_config.resolve(process.cwd(), program.tp);
+series(
+  getProjectName,
+  getHomepage,
+  getRepo,
+  getBugTracker,
+  getTargetPath,
+  function() {
+    var sourcePath = generic_config.resolve(process.cwd(), program.sp);
+    var targetPath = generic_config.resolve(process.cwd(), program.tp);
 
-directory.process(sourcePath, targetPath, program, function(err) {
-  if (err) {
-    console.error(String(err));
-    process.exit(1);
+    directory.process(sourcePath, targetPath, program, function(err) {
+      console.log("all done!");
+      if (err) {
+        console.error(String(err));
+        process.exit(1);
+      }
+      process.exit(0);
+    });
   }
-});
+);
+
+function series() {
+  var funcs = [].slice.call(arguments, 0);
+
+  next();
+
+  function next() {
+    var func = funcs.shift();
+    if (!func) return;
+
+    func(next);
+  }
+}
+
+
+function getProjectName(done) {
+  if (program.pn) return done();
+
+  program.prompt('Project name: ', function(val) {
+    if ( ! val) return getProjectName(done);
+
+    program.pn = val;
+    done();
+  });
+
+}
+
+function getHomepage(done) {
+  if (program.ph) return done();
+
+  var homepage = program.ag ? program.ag + '/' + program.pn : '';
+  var promptText = strformat('Project homepage [{0}]: ', homepage);
+  program.prompt(promptText, function(val) {
+    program.ph = val || homepage;
+    console.log(strformat('Homepage => {0}', program.ph));
+    done();
+  });
+}
+
+function getRepo(done) {
+  if (program.pr) return done();
+
+  var repo = program.ph ? program.ph + '.git' : '';
+  var promptText = strformat('Project repo [{0}]: ', repo);
+  program.prompt(promptText, function(val) {
+    program.pr = val || repo;
+    console.log(strformat('Repo => {0}', program.pr));
+    done();
+  });
+}
+
+function getBugTracker(done) {
+  if (program.pb) return done();
+
+  var repo = program.ph ? program.ph + '/issues' : '';
+  var promptText = strformat('Project bug tracker [{0}]: ', repo);
+  program.prompt(promptText, function(val) {
+    program.pb = val || repo;
+    console.log(strformat('Bug tracker => {0}', program.pb));
+    done();
+  });
+}
+
+function getTargetPath(done) {
+  if (program.tp) return done();
+
+  var targetPath = program.pn ? path.join(process.cwd(), program.pn) : __dirname;
+  var promptText = strformat('Target directory [{0}]: ', targetPath);
+  program.prompt(promptText, function(val) {
+    program.tp = val || targetPath;
+    console.log(strformat('Target directory => {0}', program.tp));
+    done();
+  });
+}
+
 
 

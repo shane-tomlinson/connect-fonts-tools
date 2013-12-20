@@ -2,7 +2,12 @@
   "Author": "Shane Tomlinson <shane@shanetomlinson.com> (https://shanetomlinson.com)",
   "name": "connect-fonts-tools",
   "description": "Utility scripts for working with connect-fonts font packs",
-  "keywords": ["font", "font-face", "CSS", "connect-fonts-tools"],
+  "keywords": [
+    "font",
+    "font-face",
+    "CSS",
+    "connect-fonts-tools"
+  ],
   "homepage": "https://github.com/shane-tomlinson/connect-fonts-tools",
   "repository": {
     "type": "git",
@@ -11,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/shane-tomlinson/connect-fonts-tools/issues"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "node": ">= 0.6.2"
   },
@@ -29,14 +34,13 @@
     "async": "0.2.6",
     "easierobject": "0.0.1",
     "commodore": "0.0.1",
-    "prompt": "0.2.9"
+    "prompt": "0.2.9",
+    "strformat": "0.0.3"
   },
   "bin": {
     "create_fontpack": "./scripts/create_fontpack",
     "setup_connect_fonts": "./scripts/setup",
     "subset_font": "./scripts/subset"
   },
-  "scripts": {
-
-  }
+  "scripts": {}
 }
